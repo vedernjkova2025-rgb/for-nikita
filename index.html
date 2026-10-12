@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Мой Виртуальный Друг</title>
+  <title>Мармеладочка — Мой виртуальный друг</title>
   <style>
     :root {
-      --bg-day: linear-gradient(180deg, #cde9f6 0%, #edf7fc 58%, #e1c8a6 58%, #bfa07c 100%);
-      --bg-night: linear-gradient(180deg, #101626 0%, #1c273e 58%, #2c251e 58%, #1b1612 100%);
+      --bg-day: linear-gradient(180deg, #cbe8f8 0%, #ebf7fd 55%, #dfc7a7 55%, #be9c76 100%);
+      --bg-night: linear-gradient(180deg, #0e1526 0%, #1a263e 55%, #2a221b 55%, #19140f 100%);
       --primary: #6366f1;
       --primary-hover: #4f46e5;
       --text: #1e293b;
@@ -23,7 +23,7 @@
     }
 
     body {
-      background: #0f172a;
+      background: #0b1120;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -36,16 +36,17 @@
       width: 100%;
       max-width: 440px;
       background: #ffffff;
-      border-radius: 28px;
+      border-radius: 30px;
       overflow: hidden;
-      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 25px 65px -15px rgba(0, 0, 0, 0.6);
       display: flex;
       flex-direction: column;
       position: relative;
     }
 
+    /* Верхняя панель */
     .top-bar {
-      background: rgba(255, 255, 255, 0.92);
+      background: rgba(255, 255, 255, 0.95);
       backdrop-filter: blur(10px);
       padding: 12px 18px;
       display: flex;
@@ -62,8 +63,8 @@
     }
 
     .lvl-num {
-      width: 40px;
-      height: 40px;
+      width: 42px;
+      height: 42px;
       border-radius: 50%;
       background: linear-gradient(135deg, #f59e0b, #d97706);
       color: #fff;
@@ -100,7 +101,7 @@
 
     .exp-bar-fill {
       height: 100%;
-      width: 25%;
+      width: 30%;
       background: linear-gradient(90deg, #10b981, #059669);
       border-radius: 999px;
       transition: width 0.3s ease;
@@ -119,8 +120,9 @@
       gap: 6px;
     }
 
+    /* Игровая сцена */
     .room-stage {
-      height: 380px;
+      height: 385px;
       background: var(--bg-day);
       position: relative;
       overflow: hidden;
@@ -128,7 +130,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: flex-end;
-      padding-bottom: 8px;
+      padding-bottom: 6px;
       transition: background 0.6s ease;
       cursor: pointer;
     }
@@ -137,15 +139,43 @@
       background: var(--bg-night);
     }
 
+    /* Табличка с именем */
+    .name-badge {
+      position: absolute;
+      top: 14px;
+      left: 18px;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 5px 14px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      border: 1.5px solid #fbcfe8;
+      z-index: 10;
+    }
+
+    .name-badge .marmelade-icon {
+      font-size: 15px;
+    }
+
+    .name-badge .name-text {
+      font-size: 13px;
+      font-weight: 800;
+      color: #be185d;
+      letter-spacing: 0.3px;
+    }
+
+    /* Окно комнаты */
     .room-window {
       position: absolute;
-      top: 20px;
-      right: 24px;
-      width: 60px;
-      height: 68px;
+      top: 14px;
+      right: 18px;
+      width: 58px;
+      height: 64px;
       background: #bae6fd;
       border: 4px solid #ffffff;
-      border-radius: 10px;
+      border-radius: 12px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
       display: flex;
       align-items: center;
@@ -159,20 +189,21 @@
       background: #0b1120;
     }
 
+    /* Облачко речи */
     .speech-bubble {
       position: absolute;
-      top: 16px;
+      top: 60px;
       left: 50%;
       transform: translateX(-50%) scale(0.9);
       background: #ffffff;
-      padding: 10px 16px;
+      padding: 10px 18px;
       border-radius: 20px;
       font-size: 13px;
       font-weight: 600;
       color: #1e293b;
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.16);
       border: 2px solid #cbd5e1;
-      max-width: 84%;
+      max-width: 86%;
       text-align: center;
       pointer-events: none;
       opacity: 0;
@@ -198,6 +229,7 @@
       opacity: 1;
     }
 
+    /* Всплывающие эффекты */
     .floater {
       position: absolute;
       font-size: 20px;
@@ -215,9 +247,10 @@
       100% { opacity: 0; transform: translateY(-85px) scale(0.8); }
     }
 
+    /* Персонаж (Векторный портрет) */
     .character-wrap {
-      width: 230px;
-      height: 290px;
+      width: 245px;
+      height: 300px;
       position: relative;
       display: flex;
       justify-content: center;
@@ -234,9 +267,10 @@
     .char-svg {
       width: 100%;
       height: 100%;
-      filter: drop-shadow(0 12px 18px rgba(0, 0, 0, 0.16));
+      filter: drop-shadow(0 14px 20px rgba(0, 0, 0, 0.16));
     }
 
+    /* Анимации мимики */
     .mouth-line {
       transition: d 0.25s ease, stroke 0.25s ease;
     }
@@ -246,7 +280,7 @@
     }
 
     .blush-glow {
-      opacity: 0.2;
+      opacity: 0.25;
       transition: opacity 0.3s ease;
     }
 
@@ -260,7 +294,7 @@
 
     @keyframes happyBounce {
       0% { transform: translateY(0); }
-      100% { transform: translateY(-8px); }
+      100% { transform: translateY(-9px); }
     }
 
     .character-wrap.sad .svg-body-group {
@@ -268,10 +302,11 @@
       filter: saturate(0.8);
     }
 
+    /* Сон */
     .sleep-dimmer {
       position: absolute;
       inset: 0;
-      background: rgba(10, 16, 32, 0.4);
+      background: rgba(10, 16, 32, 0.42);
       pointer-events: none;
       opacity: 0;
       transition: opacity 0.6s ease;
@@ -304,6 +339,7 @@
       100% { opacity: 0; transform: translate(40px, -55px) scale(1.4); }
     }
 
+    /* Эффекты купания */
     .soap-bubbles-overlay {
       position: absolute;
       inset: 0;
@@ -338,6 +374,7 @@
       100% { background-position: 10px 40px; }
     }
 
+    /* Полоски состояния */
     .stats-panel {
       background: #f8fafc;
       padding: 10px 16px;
@@ -384,6 +421,7 @@
     .fill-clean { background: #06b6d4; }
     .fill-energy { background: #8b5cf6; }
 
+    /* Навигация */
     .actions-nav {
       display: flex;
       justify-content: space-around;
@@ -423,6 +461,7 @@
       box-shadow: inset 0 0 0 2px var(--primary);
     }
 
+    /* Вкладки */
     .tab-content {
       padding: 14px 16px 16px;
       background: #ffffff;
@@ -581,6 +620,7 @@
 <body>
 
   <div class="game-card">
+    <!-- Верхняя панель -->
     <div class="top-bar">
       <div class="lvl-box">
         <div class="lvl-num" id="lvlNumber">1</div>
@@ -597,72 +637,115 @@
       </div>
     </div>
 
+    <!-- Комната с персонажем -->
     <div class="room-stage" id="roomStage" onclick="petCharacter(event)">
+      <!-- Подпись персонажа -->
+      <div class="name-badge">
+        <span class="marmelade-icon">🍬</span>
+        <span class="name-text">Мармеладочка</span>
+      </div>
+
       <div class="room-window" id="roomWindow">☀️</div>
       
-      <div class="speech-bubble" id="speechBubble">Привет! Очень рада тебя видеть! ✨</div>
+      <div class="speech-bubble" id="speechBubble">Привет! Мармеладочка рада тебя видеть! ✨</div>
       <div class="zzz-text" id="zzzText">Z z z...</div>
       
       <div class="sleep-dimmer"></div>
       <div class="soap-bubbles-overlay" id="soapBubbles"></div>
       <div class="water-stream-overlay" id="waterStream"></div>
 
+      <!-- Векторный портрет Мармеладочки -->
       <div class="character-wrap" id="characterWrap">
-        <svg class="char-svg" viewBox="0 0 220 270" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg class="char-svg" viewBox="0 0 240 290" fill="none" xmlns="http://www.w3.org/2000/svg">
           <g class="svg-body-group" id="svgBody">
-            <ellipse cx="110" cy="264" rx="65" ry="6" fill="#334155" opacity="0.22"/>
+            <!-- Мягкая тень под ногами -->
+            <ellipse cx="120" cy="284" rx="70" ry="6" fill="#334155" opacity="0.22"/>
 
-            <path d="M 45 100 C 30 140, 28 190, 36 245 C 50 252, 68 250, 75 240 C 65 190, 68 150, 72 120 Z" fill="#7a5332"/>
-            <path d="M 175 100 C 190 140, 192 190, 184 245 C 170 252, 152 250, 145 240 C 155 190, 152 150, 148 120 Z" fill="#7a5332"/>
-            <path d="M 46 95 C 40 50, 180 50, 174 95 C 182 145, 175 220, 165 248 C 110 255, 55 248, 55 248 C 45 220, 38 145, 46 95 Z" fill="#694426"/>
+            <!-- Задняя масса волос: пшенично-русые волны -->
+            <path d="M 40 100 C 22 150, 20 205, 28 265 C 44 274, 66 270, 75 255 C 62 195, 66 150, 72 120 Z" fill="#7a5332"/>
+            <path d="M 200 100 C 218 150, 220 205, 212 265 C 196 274, 174 270, 165 255 C 178 195, 174 150, 168 120 Z" fill="#7a5332"/>
+            <path d="M 42 90 C 35 40, 205 40, 198 90 C 208 145, 198 230, 186 268 C 120 278, 55 268, 55 268 C 42 230, 32 145, 42 90 Z" fill="#694425"/>
 
-            <path d="M 72 175 C 65 195, 52 235, 50 262 C 85 266, 135 266, 170 262 C 168 235, 155 195, 148 175 Z" fill="#1e2024"/>
-            <path d="M 92 165 C 92 160, 128 160, 128 165 L 132 180 C 132 180, 110 183, 88 180 Z" fill="#2b2d33"/>
+            <!-- Одежда: черный полупрозрачный лонгслив со стойкой (как на фото) -->
+            <path d="M 68 185 C 60 210, 44 255, 42 282 C 85 287, 155 287, 198 282 C 196 255, 180 210, 172 185 Z" fill="#1b1c20"/>
+            <!-- Текстурные вертикальные полоски лонгслива -->
+            <path d="M 85 200 L 85 283 M 105 198 L 105 284 M 135 198 L 135 284 M 155 200 L 155 283" stroke="#2c2d33" stroke-width="1.5" opacity="0.5"/>
+            <!-- Воротник стойка -->
+            <path d="M 98 174 C 98 168, 142 168, 142 174 L 146 192 C 146 192, 120 196, 94 192 Z" fill="#24262b"/>
 
-            <rect x="94" y="142" width="32" height="26" rx="8" fill="#ffd8c0"/>
-            <path d="M 68 95 C 68 62, 152 62, 152 95 C 152 136, 138 158, 110 158 C 82 158, 68 136, 68 95 Z" fill="#ffe5d4"/>
-            <circle cx="152" cy="116" r="2.5" fill="#111827"/>
+            <!-- Шея (нежная, округлая) -->
+            <rect x="102" y="150" width="36" height="28" rx="10" fill="#ffd8c0"/>
 
-            <path d="M 110 58 C 85 58, 56 68, 52 108 C 48 140, 52 175, 58 240 C 64 242, 72 238, 70 220 C 66 170, 72 135, 80 110 C 90 95, 100 88, 110 88 Z" fill="#8f633c"/>
-            <path d="M 110 58 C 135 58, 164 68, 168 108 C 172 140, 168 175, 162 240 C 156 242, 148 238, 150 220 C 154 170, 148 135, 140 110 C 130 95, 120 88, 110 88 Z" fill="#8f633c"/>
+            <!-- Форма лица (мягкие щечки, нежный подбородок как на фото) -->
+            <path d="M 70 102 C 70 65, 170 65, 170 102 C 170 144, 154 168, 120 168 C 86 168, 70 144, 70 102 Z" fill="#ffe7d6"/>
 
-            <path d="M 80 72 Q 62 95 62 135" stroke="#b08154" stroke-width="3" stroke-linecap="round"/>
-            <path d="M 140 72 Q 158 95 158 135" stroke="#b08154" stroke-width="3" stroke-linecap="round"/>
+            <!-- Серьга-гвоздик в ушке -->
+            <circle cx="170" cy="120" r="2.8" fill="#111827"/>
 
+            <!-- Передние пряди с пробором посередине и медовыми бликами -->
+            <!-- Левая прядь -->
+            <path d="M 120 62 C 92 62, 60 74, 55 116 C 50 152, 54 195, 62 260 C 70 262, 78 256, 76 238 C 72 185, 78 145, 88 118 C 98 102, 108 94, 120 94 Z" fill="#8f633c"/>
+            <!-- Правая прядь -->
+            <path d="M 120 62 C 148 62, 180 74, 185 116 C 190 152, 186 195, 178 260 C 170 262, 162 256, 164 238 C 168 185, 162 145, 152 118 C 142 102, 132 94, 120 94 Z" fill="#8f633c"/>
+
+            <!-- Золотисто-русые блики волос -->
+            <path d="M 88 78 Q 68 105 68 145" stroke="#bfa075" stroke-width="3" stroke-linecap="round"/>
+            <path d="M 152 78 Q 172 105 172 145" stroke="#bfa075" stroke-width="3" stroke-linecap="round"/>
+            <path d="M 112 70 Q 98 84 94 104" stroke="#d4b48c" stroke-width="2" stroke-linecap="round"/>
+            <path d="M 128 70 Q 142 84 146 104" stroke="#d4b48c" stroke-width="2" stroke-linecap="round"/>
+
+            <!-- Глаза (серо-зеленые, выразительные с мягким разрезом) -->
             <g id="eyesG">
-              <ellipse cx="90" cy="108" rx="8" ry="7" fill="#ffffff"/>
-              <ellipse cx="90" cy="108" rx="5.5" ry="6" fill="#475569" class="eye-pupil" id="pupilL"/>
-              <circle cx="91.5" cy="106" r="2" fill="#ffffff"/>
-              <path d="M 81 106 Q 90 100 99 106" stroke="#1f2937" stroke-width="2.5" stroke-linecap="round"/>
-              <path d="M 97 103 L 100 101" stroke="#1f2937" stroke-width="1.8" stroke-linecap="round"/>
+              <!-- Левый глаз -->
+              <ellipse cx="98" cy="114" rx="9" ry="8" fill="#ffffff"/>
+              <!-- Радужка серо-зеленая -->
+              <ellipse cx="98" cy="114" rx="6.5" ry="7" fill="#52646d"/>
+              <ellipse cx="98" cy="114" rx="4" ry="4.5" fill="#1e293b"/>
+              <circle cx="100" cy="111.5" r="2.2" fill="#ffffff"/>
+              <!-- Складка верхнего века и реснички -->
+              <path d="M 87 112 Q 98 105 109 112" stroke="#1f2937" stroke-width="2.6" stroke-linecap="round"/>
+              <path d="M 106 108 L 110 106" stroke="#1f2937" stroke-width="1.8" stroke-linecap="round"/>
+              <path d="M 90 108 Q 98 103 106 108" stroke="#d4a383" stroke-width="1.2" stroke-linecap="round" fill="none"/>
 
-              <ellipse cx="130" cy="108" rx="8" ry="7" fill="#ffffff"/>
-              <ellipse cx="130" cy="108" rx="5.5" ry="6" fill="#475569" class="eye-pupil" id="pupilR"/>
-              <circle cx="131.5" cy="106" r="2" fill="#ffffff"/>
-              <path d="M 121 106 Q 130 100 139 106" stroke="#1f2937" stroke-width="2.5" stroke-linecap="round"/>
-              <path d="M 137 103 L 140 101" stroke="#1f2937" stroke-width="1.8" stroke-linecap="round"/>
+              <!-- Правый глаз -->
+              <ellipse cx="142" cy="114" rx="9" ry="8" fill="#ffffff"/>
+              <!-- Радужка серо-зеленая -->
+              <ellipse cx="142" cy="114" rx="6.5" ry="7" fill="#52646d"/>
+              <ellipse cx="142" cy="114" rx="4" ry="4.5" fill="#1e293b"/>
+              <circle cx="144" cy="111.5" r="2.2" fill="#ffffff"/>
+              <!-- Складка верхнего века и реснички -->
+              <path d="M 131 112 Q 142 105 153 112" stroke="#1f2937" stroke-width="2.6" stroke-linecap="round"/>
+              <path d="M 150 108 L 154 106" stroke="#1f2937" stroke-width="1.8" stroke-linecap="round"/>
+              <path d="M 134 108 Q 142 103 150 108" stroke="#d4a383" stroke-width="1.2" stroke-linecap="round" fill="none"/>
             </g>
 
+            <!-- Брови (естественная форма с мягким кончиком) -->
             <g id="browsG">
-              <path id="browL" class="eyebrow-line" d="M 80 96 Q 90 92 99 95" stroke="#5c3a21" stroke-width="3" stroke-linecap="round"/>
-              <path id="browR" class="eyebrow-line" d="M 121 95 Q 130 92 140 96" stroke="#5c3a21" stroke-width="3" stroke-linecap="round"/>
+              <path id="browL" class="eyebrow-line" d="M 86 101 Q 98 96 108 100" stroke="#5a3b22" stroke-width="3.2" stroke-linecap="round"/>
+              <path id="browR" class="eyebrow-line" d="M 132 100 Q 142 96 154 101" stroke="#5a3b22" stroke-width="3.2" stroke-linecap="round"/>
             </g>
 
-            <path d="M 108 116 Q 110 119 112 116" stroke="#e0a385" stroke-width="2.5" stroke-linecap="round"/>
+            <!-- Носик (аккуратный) -->
+            <path d="M 118 122 Q 120 126 122 122" stroke="#e0a385" stroke-width="2.5" stroke-linecap="round"/>
 
+            <!-- Щечки: румянец Мармеладочки -->
             <g class="blush-glow" id="blushG">
-              <ellipse cx="80" cy="122" rx="9" ry="5.5" fill="#f43f5e"/>
-              <ellipse cx="140" cy="122" rx="9" ry="5.5" fill="#f43f5e"/>
+              <ellipse cx="86" cy="128" rx="10" ry="6" fill="#f43f5e"/>
+              <ellipse cx="154" cy="128" rx="10" ry="6" fill="#f43f5e"/>
             </g>
 
-            <path id="mouthLine" class="mouth-line" d="M 96 134 Q 110 144 124 134" stroke="#d9465e" stroke-width="3.5" stroke-linecap="round" fill="none"/>
-            <path id="lipUnder" d="M 102 142 Q 110 145 118 142" stroke="#ea580c" stroke-width="1.8" stroke-linecap="round" opacity="0.4"/>
-            <ellipse id="tearDrop" cx="85" cy="126" rx="3.5" ry="5" fill="#38bdf8" style="opacity: 0; transition: opacity 0.3s;"/>
+            <!-- Губы: нежная мягкая полуулыбка как на фото -->
+            <path id="mouthLine" class="mouth-line" d="M 104 142 Q 120 152 136 142" stroke="#d9465e" stroke-width="3.6" stroke-linecap="round" fill="none"/>
+            <path id="lipUnder" d="M 112 150 Q 120 153 128 150" stroke="#f43f5e" stroke-width="2" stroke-linecap="round" opacity="0.45"/>
+
+            <!-- Слеза при обиде -->
+            <ellipse id="tearDrop" cx="92" cy="132" rx="3.5" ry="5.5" fill="#38bdf8" style="opacity: 0; transition: opacity 0.3s;"/>
           </g>
         </svg>
       </div>
     </div>
 
+    <!-- Полоски состояния -->
     <div class="stats-panel">
       <div class="stat-box">
         <div class="stat-label"><span>❤️</span><span id="statMoodVal">80%</span></div>
@@ -682,6 +765,7 @@
       </div>
     </div>
 
+    <!-- Меню действий -->
     <div class="actions-nav">
       <button class="nav-btn active" id="tabTalkBtn" onclick="switchTab('talk')">
         <span class="icon">💬</span>
@@ -701,35 +785,38 @@
       </button>
     </div>
 
+    <!-- Вкладки действий -->
     <div class="tab-content">
+      <!-- Общение -->
       <div class="talk-section" id="talkTab">
         <div class="custom-input-box">
-          <input type="text" id="talkInput" class="talk-input" placeholder="Напишите комплимент или фразу..." onkeydown="handleInputKey(event)">
+          <input type="text" id="talkInput" class="talk-input" placeholder="Скажите что-нибудь Мармеладочке..." onkeydown="handleInputKey(event)">
           <button class="send-btn" onclick="sendCustomMessage()">Сказать</button>
         </div>
 
         <div class="chips-row">
-          <button class="chip-btn chip-good" onclick="sayQuote('Ты очень красивая и милая! ✨', true)">«Ты очень красивая!»</button>
-          <button class="chip-btn chip-good" onclick="sayQuote('У тебя очаровательная улыбка! 😊', true)">«Очаровательная улыбка»</button>
-          <button class="chip-btn chip-good" onclick="sayQuote('Ты умница, всё получится! 💖', true)">«Ты умница!»</button>
+          <button class="chip-btn chip-good" onclick="sayQuote('Мармеладочка, ты невероятно красивая! ✨', true)">«Ты очень красивая!»</button>
+          <button class="chip-btn chip-good" onclick="sayQuote('У тебя самая милая улыбка! 😊', true)">«Самая милая улыбка»</button>
+          <button class="chip-btn chip-good" onclick="sayQuote('Ты умница и солнышко! 💖', true)">«Ты умница!»</button>
           <button class="chip-btn chip-bad" onclick="sayQuote('Ты вредная и скучная! 👎', false)">«Ты скучная»</button>
           <button class="chip-btn chip-bad" onclick="sayQuote('Мне с тобой неинтересно! 😠', false)">«Неинтересно»</button>
         </div>
-        <div class="hint-text">Кликните по персонажу, чтобы пощекотать и услышать смех!</div>
+        <div class="hint-text">Кликните по Мармеладочке, чтобы пощекотать её и развеселить!</div>
       </div>
 
+      <!-- Еда -->
       <div class="food-grid" id="foodTab" style="display: none;">
         <div class="food-card" onclick="feed('croissant', 'Круассан 🥐', 20)">
           <span class="emoji">🥐</span>
           <span class="label">Круассан</span>
         </div>
+        <div class="food-card" onclick="feed('marmalade', 'Мармеладки 🍬', 25)">
+          <span class="emoji">🍬</span>
+          <span class="label">Мармелад</span>
+        </div>
         <div class="food-card" onclick="feed('coffee', 'Капучино ☕', 15)">
           <span class="emoji">☕</span>
           <span class="label">Кофе</span>
-        </div>
-        <div class="food-card" onclick="feed('pizza', 'Пицца 🍕', 30)">
-          <span class="emoji">🍕</span>
-          <span class="label">Пицца</span>
         </div>
         <div class="food-card" onclick="feed('berries', 'Клубника 🍓', 20)">
           <span class="emoji">🍓</span>
@@ -737,6 +824,7 @@
         </div>
       </div>
 
+      <!-- Ванная -->
       <div class="tool-box" id="bathTab" style="display: none;">
         <button class="big-btn" onclick="applySoap()">
           <span class="big-ico">🧼</span>
@@ -748,6 +836,7 @@
         </button>
       </div>
 
+      <!-- Спальня -->
       <div class="tool-box" id="sleepTab" style="display: none;">
         <button class="big-btn" id="lightSwitchBtn" onclick="toggleSleep()">
           <span class="big-ico" id="lightSwitchIco">💡</span>
@@ -815,7 +904,8 @@
     const GOOD_WORDS = [
       'красив', 'мил', 'умн', 'прекрасн', 'молодец', 'хорош', 'лучш', 'супер', 'чудесн',
       'улыб', 'обожаю', 'люблю', 'топ', 'класс', 'симпатичн', 'очаровательн', 'глазки',
-      'сияеш', 'солнышко', 'умница', 'добр', 'нежн', 'радост', 'приятн', 'горж', 'красотка'
+      'сияеш', 'солнышко', 'умница', 'добр', 'нежн', 'радост', 'приятн', 'горж', 'красотка',
+      'мармелад', 'конфетк', 'сладк'
     ];
 
     const BAD_WORDS = [
@@ -847,31 +937,31 @@
 
       if (expression === 'happy') {
         wrap.classList.add('happy');
-        mouth.setAttribute('d', 'M 92 130 Q 110 152 128 130');
+        mouth.setAttribute('d', 'M 100 138 Q 120 156 140 138'); // широкая сияющая улыбка
         mouth.setAttribute('stroke', '#e11d48');
-        browL.setAttribute('d', 'M 80 94 Q 90 88 99 94');
-        browR.setAttribute('d', 'M 121 94 Q 130 88 140 94');
+        browL.setAttribute('d', 'M 86 98 Q 98 92 108 98');
+        browR.setAttribute('d', 'M 132 98 Q 142 92 154 98');
         tear.style.opacity = '0';
       } else if (expression === 'sad') {
         wrap.classList.add('sad');
-        mouth.setAttribute('d', 'M 95 142 Q 110 130 125 142');
+        mouth.setAttribute('d', 'M 104 148 Q 120 138 136 148'); // грустный ротик
         mouth.setAttribute('stroke', '#64748b');
-        browL.setAttribute('d', 'M 80 92 Q 90 98 99 94');
-        browR.setAttribute('d', 'M 121 94 Q 130 98 140 92');
+        browL.setAttribute('d', 'M 86 97 Q 98 102 108 99');
+        browR.setAttribute('d', 'M 132 99 Q 142 102 154 97');
         tear.style.opacity = '0.9';
       } else if (expression === 'eating') {
-        mouth.setAttribute('d', 'M 96 130 Q 110 148 124 130 Q 110 125 96 130');
+        mouth.setAttribute('d', 'M 104 138 Q 120 154 136 138 Q 120 130 104 138');
         tear.style.opacity = '0';
       } else {
-        mouth.setAttribute('d', 'M 96 134 Q 110 144 124 134');
+        mouth.setAttribute('d', 'M 104 142 Q 120 152 136 142');
         mouth.setAttribute('stroke', '#d9465e');
-        browL.setAttribute('d', 'M 80 96 Q 90 92 99 95');
-        browR.setAttribute('d', 'M 121 95 Q 130 92 140 96');
+        browL.setAttribute('d', 'M 86 101 Q 98 96 108 100');
+        browR.setAttribute('d', 'M 132 100 Q 142 96 154 101');
         tear.style.opacity = '0';
       }
     }
 
-    function showSpeech(text, duration = 3000) {
+    function showSpeech(text, duration = 3200) {
       const bubble = document.getElementById('speechBubble');
       bubble.textContent = text;
       bubble.classList.add('active');
@@ -916,7 +1006,7 @@
       state.exp = state.exp - state.expNeeded;
       state.expNeeded = Math.round(state.expNeeded * 1.35);
       spawnFloater(`🎉 УРОВЕНЬ ${state.level}! 🎉`, '#f59e0b');
-      showSpeech(`Ура! Мы перешли на Уровень ${state.level}! Ты потрясающий друг! ✨`, 3500);
+      showSpeech(`Ура! Мы с Мармеладочкой перешли на Уровень ${state.level}! 💖✨`, 3500);
       soundJoy();
 
       const num = document.getElementById('lvlNumber');
@@ -932,10 +1022,10 @@
       spawnFloater('+25 ⭐ ❤️', '#ec4899');
 
       const phrases = [
-        'Ой, спасибочки! Мне так приятно! 🥰',
-        'Твои слова согревают и радуют! ✨',
-        'Улыбаюсь до ушек! Ты прелесть! 💖',
-        'Ты умеешь поднять настроение! 🌟'
+        'Ой, спасибочки! Мармеладочке так приятно! 🥰',
+        'Твои слова согревают сердце! Улыбаюсь! ✨',
+        'Хи-хи, щёчки горят! Ты самый лучший друг! 💖',
+        'От таких слов Мармеладочка просто сияет! 🌟'
       ];
       const answer = phrase ? `«${phrase}» — ${phrases[Math.floor(Math.random() * phrases.length)]}` : phrases[Math.floor(Math.random() * phrases.length)];
       showSpeech(answer);
@@ -953,10 +1043,10 @@
       spawnFloater('-20 ⭐ 💔', '#ef4444');
 
       const sadAnswers = [
-        'Зачем ты так обижаешь меня?.. 😢',
-        'Мне очень больно такое слышать... 💔',
-        'Я к тебе со всей душой, а ты грубишь... 😭',
-        'Пожалуйста, не говори мне таких слов...'
+        'Мармеладочке очень больно и грустно такое слышать... 😢',
+        'За что ты так?.. Я ведь к тебе со всей душой... 💔',
+        'Пожалуйста, не обижай Мармеладочку... 😭',
+        'Мне так неловко и неприятно от этих слов...'
       ];
       const answer = phrase ? `«${phrase}»... ${sadAnswers[Math.floor(Math.random() * sadAnswers.length)]}` : sadAnswers[Math.floor(Math.random() * sadAnswers.length)];
       showSpeech(answer);
@@ -981,7 +1071,7 @@
       if (sentiment === 'good') reactPraise(val);
       else if (sentiment === 'bad') reactInsult(val);
       else {
-        showSpeech(`«${val}» — хм, запомню! 🤔`);
+        showSpeech(`«${val}» — Мармеладочка внимательно тебя слушает! 🤔`);
         setFace('normal');
       }
       input.value = '';
@@ -992,9 +1082,9 @@
     }
 
     function petCharacter(e) {
-      if (e.target.closest('.room-window')) return;
+      if (e.target.closest('.room-window') || e.target.closest('.name-badge')) return;
       if (state.isSleeping) {
-        showSpeech('Тихонько, я сплю... 😴');
+        showSpeech('Тихонько, Мармеладочка спит... 😴');
         return;
       }
       state.mood = Math.min(100, state.mood + 6);
@@ -1002,7 +1092,7 @@
       soundJoy();
       setFace('happy');
       spawnFloater('❤️ Щекотно!', '#ec4899');
-      showSpeech('Хи-хи, щекотно! Спасибо за нежность! 🥰');
+      showSpeech('Хи-хи, щекотно! Мармеладочка любит обнимашки! 🥰');
       setTimeout(() => {
         if (!state.isSleeping) setFace('normal');
       }, 2000);
@@ -1010,11 +1100,11 @@
 
     function feed(type, name, val) {
       if (state.isSleeping) {
-        showSpeech('Я сейчас сплю, давай покушаем позже! 😴');
+        showSpeech('Мармеладочка спит, покорми её после пробуждения! 😴');
         return;
       }
       if (state.hunger >= 100) {
-        showSpeech('Спасибо, но я уже совсем сытая! 🥐');
+        showSpeech('Спасибочки, животик уже полный! 🥐');
         return;
       }
 
@@ -1023,7 +1113,7 @@
       addScore(10);
       soundMunch();
       spawnFloater(`+${val}% 🥐`, '#f97316');
-      showSpeech(`М-м-м, вкуснятина! ${name} — просто восторг! 😋`);
+      showSpeech(`М-м-м, объедение! ${name} — любимое лакомство Мармеладочки! 😋`);
       setFace('eating');
 
       setTimeout(() => {
@@ -1040,7 +1130,7 @@
       document.getElementById('soapBubbles').style.display = 'block';
       soundWater();
       spawnFloater('🧼 Пена!', '#06b6d4');
-      showSpeech('Ого, сколько воздушных мыльных пузырей! 🫧');
+      showSpeech('Ого, сколько мягкой ароматной пенки! 🫧');
     }
 
     function takeShower() {
@@ -1054,7 +1144,7 @@
       state.mood = Math.min(100, state.mood + 15);
       addScore(15);
       spawnFloater('💧 Свежесть!', '#06b6d4');
-      showSpeech('Какой классный освежающий душ! Чувствую себя чудесно! ✨');
+      showSpeech('Какой чудесный душ! Мармеладочка чистая и свежая! ✨');
 
       setTimeout(() => {
         water.style.display = 'none';
@@ -1079,7 +1169,7 @@
         win.textContent = '🌙';
         label.textContent = 'Включить свет';
         ico.textContent = '☀️';
-        showSpeech('Спокойной ночи! Сладких снов... 😴');
+        showSpeech('Спокойной ночи! Мармеладочка сладко спит... 😴');
         setFace('normal');
       } else {
         stage.classList.remove('night');
@@ -1088,7 +1178,7 @@
         ico.textContent = '💡';
         state.energy = Math.min(100, state.energy + 40);
         addScore(15);
-        showSpeech('Доброе утро! Я выспалась и полна сил! ⚡');
+        showSpeech('Доброе утро! Мармеладочка выспалась и полна сил! ⚡');
         soundJoy();
         setFace('happy');
         setTimeout(() => setFace('normal'), 2000);
