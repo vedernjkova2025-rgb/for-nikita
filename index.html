@@ -680,4 +680,475 @@
         <div class="stat-label"><span>⚡</span><span id="statEnergyVal">90%</span></div>
         <div class="stat-bg"><div class="stat-fill fill-energy" id="barEnergy" style="width: 90%;"></div></div>
       </div>
-   
+    </div>
+
+    <div class="actions-nav">
+      <button class="nav-btn active" id="tabTalkBtn" onclick="switchTab('talk')">
+        <span class="icon">💬</span>
+        <span>Общение</span>
+      </button>
+      <button class="nav-btn" id="tabFoodBtn" onclick="switchTab('food')">
+        <span class="icon">🥐</span>
+        <span>Покормить</span>
+      </button>
+      <button class="nav-btn" id="tabBathBtn" onclick="switchTab('bath')">
+        <span class="icon">🚿</span>
+        <span>Искупать</span>
+      </button>
+      <button class="nav-btn" id="tabSleepBtn" onclick="switchTab('sleep')">
+        <span class="icon">🌙</span>
+        <span>Сон</span>
+      </button>
+    </div>
+
+    <div class="tab-content">
+      <div class="talk-section" id="talkTab">
+        <div class="custom-input-box">
+          <input type="text" id="talkInput" class="talk-input" placeholder="Напишите комплимент или фразу..." onkeydown="handleInputKey(event)">
+          <button class="send-btn" onclick="sendCustomMessage()">Сказать</button>
+        </div>
+
+        <div class="chips-row">
+          <button class="chip-btn chip-good" onclick="sayQuote('Ты очень красивая и милая! ✨', true)">«Ты очень красивая!»</button>
+          <button class="chip-btn chip-good" onclick="sayQuote('У тебя очаровательная улыбка! 😊', true)">«Очаровательная улыбка»</button>
+          <button class="chip-btn chip-good" onclick="sayQuote('Ты умница, всё получится! 💖', true)">«Ты умница!»</button>
+          <button class="chip-btn chip-bad" onclick="sayQuote('Ты вредная и скучная! 👎', false)">«Ты скучная»</button>
+          <button class="chip-btn chip-bad" onclick="sayQuote('Мне с тобой неинтересно! 😠', false)">«Неинтересно»</button>
+        </div>
+        <div class="hint-text">Кликните по персонажу, чтобы пощекотать и услышать смех!</div>
+      </div>
+
+      <div class="food-grid" id="foodTab" style="display: none;">
+        <div class="food-card" onclick="feed('croissant', 'Круассан 🥐', 20)">
+          <span class="emoji">🥐</span>
+          <span class="label">Круассан</span>
+        </div>
+        <div class="food-card" onclick="feed('coffee', 'Капучино ☕', 15)">
+          <span class="emoji">☕</span>
+          <span class="label">Кофе</span>
+        </div>
+        <div class="food-card" onclick="feed('pizza', 'Пицца 🍕', 30)">
+          <span class="emoji">🍕</span>
+          <span class="label">Пицца</span>
+        </div>
+        <div class="food-card" onclick="feed('berries', 'Клубника 🍓', 20)">
+          <span class="emoji">🍓</span>
+          <span class="label">Клубника</span>
+        </div>
+      </div>
+
+      <div class="tool-box" id="bathTab" style="display: none;">
+        <button class="big-btn" onclick="applySoap()">
+          <span class="big-ico">🧼</span>
+          <span>Намылить пенкой</span>
+        </button>
+        <button class="big-btn" onclick="takeShower()">
+          <span class="big-ico">🚿</span>
+          <span>Включить душ</span>
+        </button>
+      </div>
+
+      <div class="tool-box" id="sleepTab" style="display: none;">
+        <button class="big-btn" id="lightSwitchBtn" onclick="toggleSleep()">
+          <span class="big-ico" id="lightSwitchIco">💡</span>
+          <span id="lightSwitchLabel">Выключить свет</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const state = {
+      score: 120,
+      level: 1,
+      exp: 30,
+      expNeeded: 100,
+      mood: 80,
+      hunger: 70,
+      clean: 85,
+      energy: 90,
+      isSleeping: false,
+      isSoapy: false,
+      speechTimer: null,
+      moodState: 'normal'
+    };
+
+    let audioCtx = null;
+    function playAudio(freq, type, duration, delay = 0) {
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime + delay);
+        gain.gain.setValueAtTime(0.08, audioCtx.currentTime + delay);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + delay + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start(audioCtx.currentTime + delay);
+        osc.stop(audioCtx.currentTime + delay + duration);
+      } catch (e) {}
+    }
+
+    function soundJoy() {
+      playAudio(523, 'triangle', 0.12, 0);
+      playAudio(659, 'triangle', 0.14, 0.1);
+      playAudio(784, 'triangle', 0.22, 0.2);
+    }
+
+    function soundSad() {
+      playAudio(380, 'sine', 0.2, 0);
+      playAudio(310, 'sine', 0.25, 0.15);
+      playAudio(240, 'sine', 0.4, 0.3);
+    }
+
+    function soundMunch() {
+      playAudio(320, 'square', 0.08, 0);
+      playAudio(460, 'square', 0.1, 0.1);
+    }
+
+    function soundWater() {
+      playAudio(620, 'sine', 0.15, 0);
+      playAudio(880, 'sine', 0.2, 0.08);
+    }
+
+    const GOOD_WORDS = [
+      'красив', 'мил', 'умн', 'прекрасн', 'молодец', 'хорош', 'лучш', 'супер', 'чудесн',
+      'улыб', 'обожаю', 'люблю', 'топ', 'класс', 'симпатичн', 'очаровательн', 'глазки',
+      'сияеш', 'солнышко', 'умница', 'добр', 'нежн', 'радост', 'приятн', 'горж', 'красотка'
+    ];
+
+    const BAD_WORDS = [
+      'плох', 'дура', 'туп', 'урод', 'глуп', 'скучн', 'вредн', 'бесиш', 'ненавижу',
+      'отстой', 'надоел', 'уйди', 'неудачниц', 'фу', 'отвали', 'ленив', 'злая', 'груб'
+    ];
+
+    function checkSentiment(text) {
+      const lower = text.toLowerCase();
+      let goodCount = 0;
+      let badCount = 0;
+      GOOD_WORDS.forEach(w => { if (lower.includes(w)) goodCount++; });
+      BAD_WORDS.forEach(w => { if (lower.includes(w)) badCount++; });
+
+      if (goodCount > badCount) return 'good';
+      if (badCount > goodCount) return 'bad';
+      return 'neutral';
+    }
+
+    function setFace(expression) {
+      state.moodState = expression;
+      const mouth = document.getElementById('mouthLine');
+      const browL = document.getElementById('browL');
+      const browR = document.getElementById('browR');
+      const tear = document.getElementById('tearDrop');
+      const wrap = document.getElementById('characterWrap');
+
+      wrap.classList.remove('happy', 'sad');
+
+      if (expression === 'happy') {
+        wrap.classList.add('happy');
+        mouth.setAttribute('d', 'M 92 130 Q 110 152 128 130');
+        mouth.setAttribute('stroke', '#e11d48');
+        browL.setAttribute('d', 'M 80 94 Q 90 88 99 94');
+        browR.setAttribute('d', 'M 121 94 Q 130 88 140 94');
+        tear.style.opacity = '0';
+      } else if (expression === 'sad') {
+        wrap.classList.add('sad');
+        mouth.setAttribute('d', 'M 95 142 Q 110 130 125 142');
+        mouth.setAttribute('stroke', '#64748b');
+        browL.setAttribute('d', 'M 80 92 Q 90 98 99 94');
+        browR.setAttribute('d', 'M 121 94 Q 130 98 140 92');
+        tear.style.opacity = '0.9';
+      } else if (expression === 'eating') {
+        mouth.setAttribute('d', 'M 96 130 Q 110 148 124 130 Q 110 125 96 130');
+        tear.style.opacity = '0';
+      } else {
+        mouth.setAttribute('d', 'M 96 134 Q 110 144 124 134');
+        mouth.setAttribute('stroke', '#d9465e');
+        browL.setAttribute('d', 'M 80 96 Q 90 92 99 95');
+        browR.setAttribute('d', 'M 121 95 Q 130 92 140 96');
+        tear.style.opacity = '0';
+      }
+    }
+
+    function showSpeech(text, duration = 3000) {
+      const bubble = document.getElementById('speechBubble');
+      bubble.textContent = text;
+      bubble.classList.add('active');
+      clearTimeout(state.speechTimer);
+      state.speechTimer = setTimeout(() => bubble.classList.remove('active'), duration);
+    }
+
+    function spawnFloater(text, color = '#10b981') {
+      const room = document.getElementById('roomStage');
+      const floater = document.createElement('div');
+      floater.className = 'floater';
+      floater.innerHTML = text;
+      floater.style.color = color;
+      floater.style.left = (42 + Math.random() * 20) + '%';
+      floater.style.top = '40%';
+      room.appendChild(floater);
+      setTimeout(() => floater.remove(), 1200);
+    }
+
+    function addScore(delta) {
+      state.score += delta;
+      if (state.score < 0) state.score = 0;
+
+      if (delta > 0) {
+        state.exp += delta;
+        if (state.exp >= state.expNeeded) {
+          levelUp();
+        }
+      } else {
+        state.exp = Math.max(0, state.exp + delta);
+        if (state.exp <= 0 && state.level > 1) {
+          state.level--;
+          state.exp = 80;
+          spawnFloater('Уровень понизился! 🔻', '#ef4444');
+        }
+      }
+      updateUI();
+    }
+
+    function levelUp() {
+      state.level++;
+      state.exp = state.exp - state.expNeeded;
+      state.expNeeded = Math.round(state.expNeeded * 1.35);
+      spawnFloater(`🎉 УРОВЕНЬ ${state.level}! 🎉`, '#f59e0b');
+      showSpeech(`Ура! Мы перешли на Уровень ${state.level}! Ты потрясающий друг! ✨`, 3500);
+      soundJoy();
+
+      const num = document.getElementById('lvlNumber');
+      num.style.transform = 'scale(1.4)';
+      setTimeout(() => num.style.transform = 'scale(1)', 400);
+    }
+
+    function reactPraise(phrase = '') {
+      state.mood = Math.min(100, state.mood + 25);
+      addScore(25);
+      setFace('happy');
+      soundJoy();
+      spawnFloater('+25 ⭐ ❤️', '#ec4899');
+
+      const phrases = [
+        'Ой, спасибочки! Мне так приятно! 🥰',
+        'Твои слова согревают и радуют! ✨',
+        'Улыбаюсь до ушек! Ты прелесть! 💖',
+        'Ты умеешь поднять настроение! 🌟'
+      ];
+      const answer = phrase ? `«${phrase}» — ${phrases[Math.floor(Math.random() * phrases.length)]}` : phrases[Math.floor(Math.random() * phrases.length)];
+      showSpeech(answer);
+
+      setTimeout(() => {
+        if (!state.isSleeping && state.mood > 40) setFace('normal');
+      }, 4000);
+    }
+
+    function reactInsult(phrase = '') {
+      state.mood = Math.max(0, state.mood - 30);
+      addScore(-20);
+      setFace('sad');
+      soundSad();
+      spawnFloater('-20 ⭐ 💔', '#ef4444');
+
+      const sadAnswers = [
+        'Зачем ты так обижаешь меня?.. 😢',
+        'Мне очень больно такое слышать... 💔',
+        'Я к тебе со всей душой, а ты грубишь... 😭',
+        'Пожалуйста, не говори мне таких слов...'
+      ];
+      const answer = phrase ? `«${phrase}»... ${sadAnswers[Math.floor(Math.random() * sadAnswers.length)]}` : sadAnswers[Math.floor(Math.random() * sadAnswers.length)];
+      showSpeech(answer);
+
+      setTimeout(() => {
+        if (!state.isSleeping && state.mood <= 40) setFace('sad');
+        else if (!state.isSleeping) setFace('normal');
+      }, 4500);
+    }
+
+    function sayQuote(phrase, isGood) {
+      if (isGood) reactPraise(phrase);
+      else reactInsult(phrase);
+    }
+
+    function sendCustomMessage() {
+      const input = document.getElementById('talkInput');
+      const val = input.value.trim();
+      if (!val) return;
+
+      const sentiment = checkSentiment(val);
+      if (sentiment === 'good') reactPraise(val);
+      else if (sentiment === 'bad') reactInsult(val);
+      else {
+        showSpeech(`«${val}» — хм, запомню! 🤔`);
+        setFace('normal');
+      }
+      input.value = '';
+    }
+
+    function handleInputKey(e) {
+      if (e.key === 'Enter') sendCustomMessage();
+    }
+
+    function petCharacter(e) {
+      if (e.target.closest('.room-window')) return;
+      if (state.isSleeping) {
+        showSpeech('Тихонько, я сплю... 😴');
+        return;
+      }
+      state.mood = Math.min(100, state.mood + 6);
+      addScore(5);
+      soundJoy();
+      setFace('happy');
+      spawnFloater('❤️ Щекотно!', '#ec4899');
+      showSpeech('Хи-хи, щекотно! Спасибо за нежность! 🥰');
+      setTimeout(() => {
+        if (!state.isSleeping) setFace('normal');
+      }, 2000);
+    }
+
+    function feed(type, name, val) {
+      if (state.isSleeping) {
+        showSpeech('Я сейчас сплю, давай покушаем позже! 😴');
+        return;
+      }
+      if (state.hunger >= 100) {
+        showSpeech('Спасибо, но я уже совсем сытая! 🥐');
+        return;
+      }
+
+      state.hunger = Math.min(100, state.hunger + val);
+      state.mood = Math.min(100, state.mood + 10);
+      addScore(10);
+      soundMunch();
+      spawnFloater(`+${val}% 🥐`, '#f97316');
+      showSpeech(`М-м-м, вкуснятина! ${name} — просто восторг! 😋`);
+      setFace('eating');
+
+      setTimeout(() => {
+        setFace('happy');
+        setTimeout(() => setFace('normal'), 1400);
+      }, 1000);
+
+      updateUI();
+    }
+
+    function applySoap() {
+      if (state.isSleeping) return;
+      state.isSoapy = true;
+      document.getElementById('soapBubbles').style.display = 'block';
+      soundWater();
+      spawnFloater('🧼 Пена!', '#06b6d4');
+      showSpeech('Ого, сколько воздушных мыльных пузырей! 🫧');
+    }
+
+    function takeShower() {
+      if (state.isSleeping) return;
+      const water = document.getElementById('waterStream');
+      const bubbles = document.getElementById('soapBubbles');
+      water.style.display = 'block';
+      soundWater();
+
+      state.clean = 100;
+      state.mood = Math.min(100, state.mood + 15);
+      addScore(15);
+      spawnFloater('💧 Свежесть!', '#06b6d4');
+      showSpeech('Какой классный освежающий душ! Чувствую себя чудесно! ✨');
+
+      setTimeout(() => {
+        water.style.display = 'none';
+        bubbles.style.display = 'none';
+        state.isSoapy = false;
+        setFace('happy');
+        setTimeout(() => setFace('normal'), 1500);
+      }, 1600);
+
+      updateUI();
+    }
+
+    function toggleSleep() {
+      state.isSleeping = !state.isSleeping;
+      const stage = document.getElementById('roomStage');
+      const win = document.getElementById('roomWindow');
+      const label = document.getElementById('lightSwitchLabel');
+      const ico = document.getElementById('lightSwitchIco');
+
+      if (state.isSleeping) {
+        stage.classList.add('night');
+        win.textContent = '🌙';
+        label.textContent = 'Включить свет';
+        ico.textContent = '☀️';
+        showSpeech('Спокойной ночи! Сладких снов... 😴');
+        setFace('normal');
+      } else {
+        stage.classList.remove('night');
+        win.textContent = '☀️';
+        label.textContent = 'Выключить свет';
+        ico.textContent = '💡';
+        state.energy = Math.min(100, state.energy + 40);
+        addScore(15);
+        showSpeech('Доброе утро! Я выспалась и полна сил! ⚡');
+        soundJoy();
+        setFace('happy');
+        setTimeout(() => setFace('normal'), 2000);
+      }
+      updateUI();
+    }
+
+    function switchTab(tab) {
+      const tabs = ['talk', 'food', 'bath', 'sleep'];
+      tabs.forEach(t => {
+        document.getElementById(`tab${t.charAt(0).toUpperCase() + t.slice(1)}Btn`).classList.remove('active');
+        document.getElementById(`${t}Tab`).style.display = 'none';
+      });
+
+      document.getElementById(`tab${tab.charAt(0).toUpperCase() + tab.slice(1)}Btn`).classList.add('active');
+      document.getElementById(`${tab}Tab`).style.display = (tab === 'talk') ? 'flex' : (tab === 'food' ? 'grid' : 'flex');
+    }
+
+    function updateUI() {
+      document.getElementById('scoreVal').textContent = state.score;
+      document.getElementById('lvlNumber').textContent = state.level;
+      document.getElementById('lvlTitle').textContent = `Уровень ${state.level}`;
+
+      const expPct = Math.min(100, Math.round((state.exp / state.expNeeded) * 100));
+      document.getElementById('expFill').style.width = `${expPct}%`;
+
+      document.getElementById('statMoodVal').textContent = `${state.mood}%`;
+      document.getElementById('barMood').style.width = `${state.mood}%`;
+
+      document.getElementById('statHungerVal').textContent = `${state.hunger}%`;
+      document.getElementById('barHunger').style.width = `${state.hunger}%`;
+
+      document.getElementById('statCleanVal').textContent = `${state.clean}%`;
+      document.getElementById('barClean').style.width = `${state.clean}%`;
+
+      document.getElementById('statEnergyVal').textContent = `${state.energy}%`;
+      document.getElementById('barEnergy').style.width = `${state.energy}%`;
+    }
+
+    setInterval(() => {
+      if (state.isSleeping) {
+        state.energy = Math.min(100, state.energy + 2);
+        state.hunger = Math.max(0, state.hunger - 0.4);
+      } else {
+        state.energy = Math.max(0, state.energy - 0.5);
+        state.hunger = Math.max(0, state.hunger - 0.8);
+        state.clean = Math.max(0, state.clean - 0.5);
+        if (state.hunger < 25 || state.clean < 25) {
+          state.mood = Math.max(0, state.mood - 1);
+        }
+      }
+
+      if (!state.isSleeping) {
+        if (state.mood <= 35) setFace('sad');
+      }
+
+      updateUI();
+    }, 4500);
+
+    updateUI();
+  </script>
+</body>
+</html>
